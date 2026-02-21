@@ -112,11 +112,10 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 2. Open MATLAB and set the current folder to the repository root.
 3. Add the repository root and all subfolders to the MATLAB path.
 4. Run the following three live scripts to reproduce all results reported in the paper (including figures, tables, and intermediate logs/process information):
-5. 
    * `cnet-tb-v1/Experiments/sim_mpQP/sim_mpqp.mlx`
    * `cnet-tb-v1/Experiments/sim_CA/sim_CA.mlx`
    * `cnet-tb-v1/Experiments/sim_ACC/sim_ACC.mlx`
-   * 
+  
 ### Reproducing figures/reports from saved data (optional)
 
 If you only want to reproduce the reported figures/tables without rerunning the full simulations:
@@ -125,9 +124,8 @@ If you only want to reproduce the reported figures/tables without rerunning the 
 2. Run the associated `report` and `plot` functions in the corresponding experiment `core/` folder.
 
 > **Notes**
->
 > * This repository includes saved simulation data used in the paper, containing the required parameters and baseline outputs for reproduction.
-> * Saved data files are typically written manually and are not automatically overwritten unless explicitly enabled in the scripts.
+> * Full simulation runs automatically save data with timestamped filenames, so the saved data used in the paper are not overwritten.
 > * Exported paper-ready figures are saved to `Figures/`.
 
 ```
