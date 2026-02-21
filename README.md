@@ -20,7 +20,7 @@ The framework is designed to **decouple hard-constraint feasibility from perform
 ```text
 ## Repository Structure
 
-```
+```text
 .
 ├─ cnet-tb-v1/                              # Core toolbox for certified executor / CertNet
 │  ├─ cert/                                 # Certified feasible library construction and querying
