@@ -158,35 +158,30 @@ The code has been tested with the following environment:
 
 ## Features and Experimental Highlights
 
-> **GitHub preview note:** GitHub does not render PDF/EPS inline in README.
-> This repository includes **PNG previews** in `Figures/` for direct viewing, while **PDF/EPS** are kept as paper-ready exports.
+> **GitHub preview note:** GitHub does not render PDF/EPS figures inline in README.  
+> This repository therefore includes **PNG preview images** in `Figures/` for direct viewing, while **PDF/EPS** versions are kept as paper-ready exports.
 
-### 1) mpQP Benchmark: Latency–Feasibility–Fidelity Trade-off Under Controlled Scaling
+### 1) mpQP Benchmark: Deployment Trade-offs Under Controlled Scaling
 
-This benchmark isolates deployment trade-offs under systematic scaling and compares five method classes:
-**QP / PWA / PureNN / NN+Proj / CertNet**.
+**Highlight**  
+The mpQP benchmark provides a controlled setting to compare deployment trade-offs across **QP / PWA / PureNN / NN+Proj / CertNet**. It highlights that **CertNet preserves hard-feasibility (up to numerical tolerance) while significantly reducing online latency**, including tail latency, and remains deployable when explicit PWA compilation becomes unavailable.
 
-**Key observations**
+**Evidence**
+- **S1:** CertNet achieves **125.6 / 114.1 / 333.5 μs** (mean / p50 / p99), with **0.00%** hard-feasibility violation rate and **13.43×** mean-latency speedup over QP.
+- **S2:** CertNet achieves **196.4 / 178.3 / 465.8 μs** (mean / p50 / p99), with **0.00%** hard-feasibility violation rate and **8.76×** mean-latency speedup over QP.
+- **PWA availability:** PWA compiles for **S1** (full/active regions: **5899 / 1815**) but is **unavailable for S2** under the same offline compilation budget (timeout).
+- **Certified library footprint (offline):**
+  - S1: `n_{LFull}/n_{LAct} = 148 / 105`
+  - S2: `n_{LFull}/n_{LAct} = 773 / 530`
 
-* **CertNet preserves hard feasibility** (0% violation rate up to numerical tolerance), similar to PWA and NN+Proj.
-* **CertNet reduces runtime**, including tail latency (p99), relative to QP and NN+Proj.
-* In the larger-scale setting (S2), **explicit PWA compilation times out**, while CertNet remains deployable.
-
-**Representative results**
-
-* **S1:** CertNet achieves **13.43×** mean-latency speedup over QP with **0%** hard-feasibility violation rate.
-* **S2:** CertNet achieves **8.76×** mean-latency speedup over QP with **0%** hard-feasibility violation rate.
-* PWA is available in S1 but **unavailable in S2** under the same offline compilation budget.
-
-**Included outputs**
-
-* Offline deployability summary (library sizes / PWA availability)
-* Aggregate comparison table (timing / feasibility / fidelity)
-* Diagnostic figure (runtime CDF, violation CDF, timing summary, runtime–error trade-off)
+**Artifacts included**
+- Diagnostic figure: runtime CDF, violation CDF, timing summary, and runtime–error trade-off  
+- Aggregate performance table (timing / feasibility / fidelity)  
+- Offline deployability scale summary (PWA availability and library sizes)
 
 <p align="center">
-  <img src="Figures/sim_mpQP.png" width="900" alt="mpQP diagnostics: timing, violation, and runtime-error trade-off"><br>
-  <b>mpQP diagnostics (two settings): runtime CDF, violation CDF, timing summary, and runtime–error trade-off</b>
+  <img src="Figures/sim_mpQP.png" width="900" alt="mpQP diagnostics: runtime CDF, violation CDF, timing summary, and runtime-error trade-off"><br>
+  <b>mpQP diagnostics (S1/S2): runtime CDF, violation CDF, timing summary, and runtime–error trade-off</b>
 </p>
 
 **Aggregate result table (paper values)**
@@ -205,28 +200,21 @@ This benchmark isolates deployment trade-offs under systematic scaling and compa
 
 ---
 
-### 2) Control Allocation (CA): Deadline-Aware Deployment (Hold-on-Timeout)
+### 2) Control Allocation (CA): Deadline-Aware Closed-Loop Deployment (Hold-on-Timeout)
 
-The CA benchmark stresses **real-time deployment semantics** under a fixed sampling deadline.
-If the runtime exceeds the budget, the controller applies a **hold action** (no new command injection), so runtime tails directly affect closed-loop performance.
+**Highlight**  
+The CA case emphasizes **real-time execution semantics** rather than timing alone. Under a fixed sampling deadline, any over-budget computation triggers a **hold action** (no command update). This makes runtime tails directly impact closed-loop performance. In this setting, **CertNet preserves hard feasibility while keeping runtime tails below the sampling budget**, yielding robust deploy-time behavior.
 
-**Key observations**
+**Evidence (CA, \(T_s = 1000\,\mu s\))**
+- **CertNet:** **217.2 / 189.4 / 680.8 μs** (mean / p50 / p99), **0.00% timeout rate**, **0.00%** hard-feasibility violation rate
+- **NN+Proj:** **1271.2 / 1099.4 / 3590.1 μs**, **56.60% timeout rate**
+- **Opt:** **1521.9 / 1326.3 / 4142.6 μs**, **100.00% timeout rate** under the same deploy-time deadline semantics
+- **PureNN:** low latency, but **14.80%** hard-feasibility violation rate
 
-* **PureNN** is fast but can violate hard constraints.
-* **NN+Proj** restores feasibility but retains solver-like latency and incurs deadline misses.
-* **CertNet** preserves hard feasibility and substantially reduces runtime tails, yielding **0% timeout rate** in the reported setting.
-
-**Representative results (CA, Ts = 1000 μs)**
-
-* **CertNet:** mean/p99 = **217.2 / 680.8 μs**, **0% timeout**, **0% feasibility violation**
-* **NN+Proj:** mean/p99 = **1271.2 / 3590.1 μs**, **56.60% timeout**
-* **Opt:** mean/p99 = **1521.9 / 4142.6 μs**, **100% timeout** under deploy-time deadline semantics
-
-**Included outputs**
-
-* Aggregate result table (timing / timeout / feasibility / tracking metric)
-* Closed-loop trajectory figure under deadline execution
-* Optional “ideal Opt” (oracle) reference for timing-free comparison
+**Artifacts included**
+- Closed-loop trajectory figure under deadline execution (hold-on-timeout semantics)
+- Aggregate table (timing / timeout / feasibility / tracking metric)
+- Optional “ideal Opt” / oracle reference trajectory (timing ignored) for reference-quality comparison
 
 <p align="center">
   <img src="Figures/sim_CA.png" width="720" alt="CA closed-loop trajectories under hold-on-timeout semantics"><br>
@@ -237,29 +225,19 @@ If the runtime exceeds the budget, the controller applies a **hold action** (no 
 
 ### 3) Adaptive Cruise Control (ACC): CLF/CBF-Style Safety Filtering with Timing-Only Runtime Evaluation
 
-The ACC benchmark evaluates a safety-critical CLF/CBF-style filtering setup where hard constraints include:
-input bounds, safety constraints, and one-step state bounds.
+**Highlight**  
+The ACC benchmark evaluates a safety-critical CLF/CBF-style filtering setup, with hard constraints including input bounds, safety constraints, and one-step state bounds. Runtime is measured under representative deploy-time inputs but **not injected into the state update** (timing-only protocol), avoiding platform-specific delay/jitter assumptions. In this setting, **CertNet matches feasible baselines in control performance while substantially reducing runtime**.
 
-Unlike CA, runtime is **measured but not injected** into the state update (timing-only protocol), so the comparison isolates controller behavior under the same sampled dynamics.
+**Evidence (ACC, \(T_s = 20\,ms\))**
+- **CertNet:** **81.2 / 72.1 / 168.2 μs** (mean / p50 / p99), **0.00%** hard-feasibility violation rate, mean performance matches feasible baselines (≈ **1.65e1**)
+- **Opt:** **897.3 / 859.1 / 1425.4 μs**
+- **NN+Proj:** **800.6 / 812.7 / 1449.4 μs**
+- **PureNN:** low latency, but **66.27%** hard-feasibility violation rate
 
-**Key observations**
-
-* **CertNet** matches the feasible teacher / NN+Proj performance level while running much faster.
-* **PureNN** is fast but exhibits frequent hard-constraint violations.
-* The structural feasibility property is visible even for a raw/untrained CertNet variant (if included in the plot).
-
-**Representative results (ACC, Ts = 20 ms)**
-
-* **CertNet:** mean/p99 = **81.2 / 168.2 μs**, **0% feasibility violation**, performance matches feasible baselines
-* **Opt:** mean/p99 = **897.3 / 1425.4 μs**
-* **NN+Proj:** mean/p99 = **800.6 / 1449.4 μs**
-* **PureNN:** fast but **66.27%** feasibility violation rate
-
-**Included outputs**
-
-* Aggregate result table (timing / feasibility / performance)
-* Closed-loop trajectory figure (speed / acceleration / safety margin)
-* Timing statistics on representative deploy-time inputs
+**Artifacts included**
+- Closed-loop trajectory figure (speed / acceleration / safety margin)
+- Aggregate table (timing / feasibility / performance)
+- Timing statistics collected on representative closed-loop inputs
 
 <p align="center">
   <img src="Figures/sim_ACC.png" width="720" alt="ACC closed-loop trajectories and safety margin"><br>
@@ -285,25 +263,23 @@ Unlike CA, runtime is **measured but not injected** into the state update (timin
 
 ### 5) Reproducibility Assets Included
 
-This repository includes both the **method implementation** and the **reproducibility artifacts** used in the paper:
+This repository includes both the **method implementation** and the **reproducibility artifacts** used for the paper:
 
-* **Reusable toolbox**
+- **Reusable toolbox**
+  - `cnet-tb-v1/cert/`: certified feasible library construction and querying
+  - `cnet-tb-v1/cert-net/`: CertNet executor, training, and inference APIs
+- **Experiment scripts**
+  - `Experiments/sim_mpQP/sim_mpqp.mlx`
+  - `Experiments/sim_CA/sim_CA.mlx`
+  - `Experiments/sim_ACC/sim_ACC.mlx`
+- **Saved experiment data (`*.mat`)**
+  - Includes the key variables/outputs needed to regenerate reported figures and tables
+  - Timestamped saving prevents overwriting paper-result snapshots
+- **Figure exports**
+  - **PDF / EPS**: paper-ready vector outputs
+  - **PNG**: GitHub/README preview images
 
-  * `cert/`: certified feasible library construction and querying
-  * `cert-net/`: CertNet executor, training, and inference APIs
-* **Reproducible experiment scripts**
-
-  * `sim_mpQP.mlx`, `sim_CA.mlx`, `sim_ACC.mlx`
-* **Saved experiment data (`*.mat`)**
-
-  * Includes the key variables/outputs needed to reproduce the reported figures and tables
-  * Timestamped saving prevents overwriting the paper-result snapshots
-* **Figure exports**
-
-  * **PDF / EPS**: paper-ready vector outputs
-  * **PNG**: README/GitHub preview images
-
-> If you only want to reproduce the reported figures/tables, load the corresponding saved `.mat` file and run the associated `report` / `plot` functions in each experiment `core/` folder.
+> To regenerate the reported figures/tables without rerunning the full simulations, load the corresponding saved `.mat` file and run the associated `report` / `plot` functions in each experiment `core/` folder.
 
 ---
 
