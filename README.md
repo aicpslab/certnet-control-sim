@@ -130,3 +130,39 @@ If you only want to reproduce the reported figures/tables without rerunning the 
 - **MATLAB:** R2025a (25.1.0.2943329)  
 - **Solvers/Libraries:** MOSEK 11.0.27; YALMIP 20250626; MPT3 3.2.1
 - MATLAB toolboxes: omitted for brevity (MATLAB will report any missing product dependencies at runtime).
+
+## Features
+
+- **Certified hard-feasibility by construction (R1)**
+  - `CertNet` enforces the hard-constraint interface structurally through certified library query + mixing, rather than relying on unconstrained regression.
+  - In the reported experiments (mpQP, CA, ACC), `CertNet` achieves **0% hard-constraint violation rate** up to numerical tolerance, while `PureNN` shows nontrivial violation rates.
+
+- **Competitive performance within the feasible family (R2)**
+  - The framework decouples feasibility from learning: feasibility is guaranteed by the executor structure, while learning is used to improve performance inside the certified feasible family.
+  - In mpQP, `CertNet` achieves competitive fidelity to the QP teacher (low \(u\)-MSE among feasible methods).
+  - In CA/ACC closed-loop tests, `CertNet` matches or outperforms feasible baselines in the reported task metrics under the same deploy-time interface.
+
+- **Low-latency deployable execution (R3)**
+  - Online execution uses a fixed-structure algebraic pipeline (query + score + simplex-style mixing) with no online iterative optimization in the deployed `CertNet` path.
+  - Across all three case studies, `CertNet` consistently reduces runtime (mean / p50 / p99) relative to online optimization and NN+projection baselines, including tail latency.
+
+- **Three reproducible case studies**
+  - **mpQP benchmark:** controlled scaling study, with explicit PWA comparison when available.
+  - **CA (Control Allocation):** deadline-aware evaluation (hold-on-timeout), showing the impact of runtime tails on closed-loop performance.
+  - **ACC (CLF/CBF-style safety filtering):** safety-critical feasibility under a timing-only protocol, with `CertNet` matching feasible-teacher performance at much lower runtime.
+
+- **Reusable toolbox implementation (`cnet-tb-v1`)**
+  - Includes the main certified-library and CertNet components (`cert/`, `cert-net/`) used in the paper.
+  - Also provides supporting utilities (`cvxOpt/`, `utilFcn/`) and experiment modules for end-to-end reproduction.
+
+- **Saved experiment data for reproduction**
+  - Includes saved `.mat` result files used in the paper (mpQP / CA / ACC), containing the key parameters and baseline outputs needed for reproducing the reported figures and tables.
+  - Full simulation runs save timestamped result files, so the paper data are not overwritten.
+
+- **Paper-ready figures included**
+  - Exported figures (`Figures/sim_mpQP.pdf`, `Figures/sim_CA.pdf`, `Figures/sim_ACC.pdf`) are included for quick inspection and direct comparison with the paper.
+  - Plot/report utilities are also provided to regenerate figures/tables from saved data or fresh runs.
+
+- **Offline/online deployment separation**
+  - **Offline:** certified library compilation, active sublibrary synthesis, and deployable executor construction.
+  - **Online:** fixed execution graph with predictable computational structure, suitable for latency-sensitive deployment.
