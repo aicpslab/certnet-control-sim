@@ -5,7 +5,6 @@ This repository contains the MATLAB implementation of our certified executor / C
 
 The codebase includes:
 - a reusable toolbox for certified library construction and CertNet execution,
-- training and inference utilities,
 - and reproducible experiments for three case studies:
   - mpQP benchmark,
   - control allocation (CA),
