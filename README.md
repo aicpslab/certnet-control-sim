@@ -18,6 +18,9 @@ The framework is designed to **decouple hard-constraint feasibility from perform
 ## Repository Structure
 
 ```text
+## Repository Structure
+
+```text
 .
 ├─ cnet-tb-v1/                              # Core toolbox for certified executor / CertNet
 │  ├─ cert/                                 # Certified feasible library construction and querying
@@ -55,36 +58,36 @@ The framework is designed to **decouple hard-constraint feasibility from perform
 │  │     ├─ simplex_cus.m
 │  │     ├─ softplus_.m
 │  │     └─ struct_merge_.m
+│
+├─ Experiments/                             # Reproducible experiment scripts
+│  ├─ sim_ACC/                              # Adaptive Cruise Control (ACC) case study
+│  │  ├─ core/                              # ACC experiment functions (test/plot/report)
+│  │  │  ├─ acc_plot_.m
+│  │  │  ├─ acc_report_.m
+│  │  │  └─ acc_test_closedloop_.m
+│  │  └─ sim_ACC.mlx                        # Main ACC experiment script
 │  │
-│  └─ Experiments/                          # Reproducible experiment scripts
-│     ├─ sim_ACC/                           # Adaptive Cruise Control (ACC) case study
-│     │  ├─ core/                           # ACC experiment functions (test/plot/report)
-│     │  │  ├─ acc_plot_.m
-│     │  │  ├─ acc_report_.m
-│     │  │  └─ acc_test_closedloop_.m
-│     │  └─ sim_ACC.mlx                     # Main ACC experiment script
-│     │
-│     ├─ sim_CA/                            # Control Allocation (CA) case study
-│     │  ├─ core/                           # CA experiment functions (test/plot/report)
-│     │  │  ├─ ca_plot_.m
-│     │  │  ├─ ca_report_.m
-│     │  │  └─ ca_test_sync_inject_.m
-│     │  └─ sim_CA.mlx                      # Main CA experiment script
-│     │
-│     ├─ sim_mpQP/                          # mpQP benchmark experiments
-│     │  ├─ core/                           # mpQP experiment functions (build/test/plot/report)
-│     │  │  ├─ mpqp_build_baseline_.m
-│     │  │  ├─ mpqp_gen_trainingData.m
-│     │  │  ├─ mpqp_make_problem_.m
-│     │  │  ├─ mpqp_plot_.m
-│     │  │  ├─ mpqp_report_problem_.m
-│     │  │  └─ mpqp_test_problem_.m
-│     │  └─ sim_mpqp.mlx                    # Main mpQP experiment script
-│     │
-│     └─ tmpFcns/                           # Shared temporary/helper functions for experiments
-│        ├─ build_pureNN_.m
-│        ├─ net_to_alg_.m
-│        └─ pure_nn_forward_alg_.m
+│  ├─ sim_CA/                               # Control Allocation (CA) case study
+│  │  ├─ core/                              # CA experiment functions (test/plot/report)
+│  │  │  ├─ ca_plot_.m
+│  │  │  ├─ ca_report_.m
+│  │  │  └─ ca_test_sync_inject_.m
+│  │  └─ sim_CA.mlx                         # Main CA experiment script
+│  │
+│  ├─ sim_mpQP/                             # mpQP benchmark experiments
+│  │  ├─ core/                              # mpQP experiment functions (build/test/plot/report)
+│  │  │  ├─ mpqp_build_baseline_.m
+│  │  │  ├─ mpqp_gen_trainingData.m
+│  │  │  ├─ mpqp_make_problem_.m
+│  │  │  ├─ mpqp_plot_.m
+│  │  │  ├─ mpqp_report_problem_.m
+│  │  │  └─ mpqp_test_problem_.m
+│  │  └─ sim_mpqp.mlx                       # Main mpQP experiment script
+│  │
+│  └─ tmpFcns/                              # Shared temporary/helper functions for experiments
+│     ├─ build_pureNN_.m
+│     ├─ net_to_alg_.m
+│     └─ pure_nn_forward_alg_.m
 │
 ├─ Figures/                                 # Exported paper-ready figures (PDF/EPS) and README previews (PNG)
 │  ├─ sim_ACC.pdf
@@ -100,6 +103,7 @@ The framework is designed to **decouple hard-constraint feasibility from perform
 ├─ ACC_vars_2026-02-20_101044.mat           # Saved ACC experiment variables/results
 ├─ CA_vars_2026-02-20_104948.mat            # Saved CA experiment variables/results
 ├─ MPQP_vars_2026-02-20_160236.mat          # Saved mpQP experiment results
+├─ LICENSE
 └─ README.md
 ````
 
@@ -117,9 +121,9 @@ The framework is designed to **decouple hard-constraint feasibility from perform
 3. Add the repository root and all subfolders to the MATLAB path.
 4. Run the following live scripts to reproduce the reported results (figures, tables, and intermediate logs/process information):
 
-   * `cnet-tb-v1/Experiments/sim_mpQP/sim_mpqp.mlx`
-   * `cnet-tb-v1/Experiments/sim_CA/sim_CA.mlx`
-   * `cnet-tb-v1/Experiments/sim_ACC/sim_ACC.mlx`
+   * `Experiments/sim_mpQP/sim_mpqp.mlx`
+   * `Experiments/sim_CA/sim_CA.mlx`
+   * `Experiments/sim_ACC/sim_ACC.mlx`
 
 ### Reproducing Figures/Reports from Saved Data (Optional)
 
