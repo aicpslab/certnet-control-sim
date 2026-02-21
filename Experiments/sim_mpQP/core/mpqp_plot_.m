@@ -1,4 +1,4 @@
-function fig = mpqp_plot_problem2_(out1, out2, cfg)
+function fig = mpqp_plot_(out1, out2, cfg)
 % mpqp_plot_problem2_
 % Paper-ready 2x4 summary figure (double-column width).
 % Row 1: out1, Row 2: out2
@@ -82,14 +82,14 @@ end
 % ---------- Export ----------
 if cfg.do_export
     pdf_path = fullfile(cfg.outdir, [cfg.export_name '.pdf']);
+    eps_path = fullfile(cfg.outdir, [cfg.export_name '.eps']);
+    png_path = fullfile(cfg.outdir, [cfg.export_name '.png']);
+
     print(fig, pdf_path, '-dpdf', '-painters');
-    if cfg.export_eps
-        eps_path = fullfile(cfg.outdir, [cfg.export_name '.eps']);
-        print(fig, eps_path, '-depsc2', '-painters');
-        fprintf('[mpqp_plot_problem2_] saved: %s and %s\n', pdf_path, eps_path);
-    else
-        fprintf('[mpqp_plot_problem2_] saved: %s\n', pdf_path);
-    end
+    print(fig, eps_path, '-depsc2', '-painters');
+    print(fig, png_path, '-dpng', '-r300');
+
+    fprintf('[mpqp_plot_problem2_] saved: %s, %s, and %s\n', pdf_path, eps_path, png_path);
 end
 
 end

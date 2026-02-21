@@ -11,7 +11,7 @@ function ca_plot_(out, pack)
 %
 % pack (optional):
 %   .plot_mode    = 'preferred' | 'deadline' | 'oracle' | 'both'
-%   .export_eps   = false/true
+%   .export   = false/true
 %   .export_name  = 'sim_CA'
 %   .outdir       = 'Figures'
 %   .marker_every = [] (auto) or positive integer
@@ -19,7 +19,7 @@ function ca_plot_(out, pack)
 % ---------------- defaults ----------------
 if nargin < 2, pack = struct(); end
 pack.plot_mode    = get_opt_(pack,'plot_mode','preferred');
-pack.export_eps   = get_opt_(pack,'export_eps',false);
+pack.export   = get_opt_(pack,'export',false);
 pack.export_name  = get_opt_(pack,'export_name','sim_CA');
 pack.outdir       = get_opt_(pack,'outdir','Figures');
 pack.marker_every = get_opt_(pack,'marker_every',[]);
@@ -236,15 +236,17 @@ if ~isempty(hLeg)
 end
 
 % ---------------- export ----------------
-if pack.export_eps
+if pack.export
     pdf_path = fullfile(pack.outdir, [pack.export_name '.pdf']);
     eps_path = fullfile(pack.outdir, [pack.export_name '.eps']);
+    png_path = fullfile(pack.outdir, [pack.export_name '.png']);
 
     drawnow;  % ensure layout/text positions are finalized before printing
 
     print(fig, pdf_path, '-dpdf', '-painters');
     print(fig, eps_path, '-depsc2', '-painters');
-    fprintf('[ca_plot_] saved: %s and %s\n', pdf_path, eps_path);
+    print(fig, png_path, '-dpng', '-r300');
+    fprintf('[ca_plot_] saved: %s, %s, and %s\n', pdf_path, eps_path, png_path);
 end
 
 end

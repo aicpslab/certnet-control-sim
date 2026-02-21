@@ -129,7 +129,8 @@ function acc_plot_(out, pack)
     tighten_axes_(axV); tighten_axes_(axU); tighten_axes_(axH);
 
     print(fig, fullfile(outdir,[base '.pdf']), '-dpdf', '-painters');
-    % if export_eps, print(fig, fullfile(outdir,[base '.eps']), '-depsc2', '-painters'); end
+print(fig, fullfile(outdir,[base '.eps']), '-depsc', '-painters');
+print(fig, fullfile(outdir,[base '.png']), '-dpng', '-r300');
 
     % -------------------- local helpers --------------------
     function y = pick_ylim_pack_(pack, loKey, hiKey, fallback)
