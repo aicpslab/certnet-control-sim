@@ -298,7 +298,3 @@ This project is released under the license included in this repository (see `LIC
 ## Contact
 
 For questions or issues, please open a GitHub issue or contact the authors.
-
-```
-
-If you want, I can also give you a **compact GitHub version** (shorter README) and a **paper-supplement version** (longer, with more experimental details).
