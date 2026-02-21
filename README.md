@@ -24,7 +24,6 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 │  │  ├─ @Cert/
 │  │  │  ├─ Cert.m
 │  │  │  ├─ api_build_.m
-│  │  │  ├─ api_build_.asv
 │  │  │  ├─ api_check_cover_cacheAct_.m
 │  │  │  ├─ api_supplement_cacheAct_.m
 │  │  │  └─ api_vertices_.m
@@ -40,8 +39,7 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 │  │  │  ├─ Certnet.m
 │  │  │  ├─ api_build_.m
 │  │  │  ├─ api_forward_.m
-│  │  │  ├─ api_train_.m
-│  │  │  └─ api_train_.asv
+│  │  │  └─ api_train_.m
 │  │  ├─ cfg/
 │  │  │  └─ set_certnet_cfg_default_.m
 │  │  ├─ InterFcn/                          # Interface/export helpers
@@ -55,7 +53,6 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 │  │     ├─ getfield_def_.m
 │  │     ├─ norm_x_.m
 │  │     ├─ simplex_cus.m
-│  │     ├─ simplex_cus.asv
 │  │     ├─ softplus_.m
 │  │     └─ struct_merge_.m
 │  │
