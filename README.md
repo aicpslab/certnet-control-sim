@@ -92,8 +92,7 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 │
 ├─ ACC_vars_2026-02-20_101044.mat           # Saved ACC experiment variables/results
 ├─ CA_vars_2026-02-20_104948.mat            # Saved CA experiment variables/results
-├─ MPQP_vars_2026-02-20_160236.mat          # Saved mpQP experiment variables/results
-├─MPQP_vars_MPQP_vars_2026-02-20_160236_ReportPlotOnly  # Saved mpQP experiment results
+├─ MPQP_vars_2026-02-20_160236.mat          # Saved mpQP experiment results
 └─ README.md
 ```
 
