@@ -101,25 +101,22 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 ```
 
 > **Notes**
-> - We provide the saved simulation data used in the paper, including the necessary parameters and baseline results for reproducing the reported experimental results.
-> - If you only want to reproduce the reported figures/tables (without rerunning the full simulations), load the corresponding `.mat` data file in MATLAB first, and then run the associated `report` and `plot` functions directly.
+> - This repository provides our toolbox implementation, **`cnet-tb-v1`**, which fully realizes the framework and experimental pipeline presented in the paper.
+> - The toolbox includes the main certified-library and CertNet components, as well as the experiment modules used to reproduce the reported results.
+> - The folders `cvxOpt/` and `utilFcn/` contain supporting convex-geometry and basic mathematical utilities used by the implementation. These functions serve as foundational building blocks, but they are not unique to the method and may be replaced by improved implementations or alternative computational pipelines.
 
 ---
 ## Quick start
 
 1. Download or clone this repository, and keep the folder structure unchanged.
 2. Open MATLAB and set the current folder to the repository root.
-3. Add the repository root and all subfolders to the MATLAB path:
-   ```matlab
-   addpath(genpath(pwd));
-````
-
+3. Add the repository root and all subfolders to the MATLAB path.
 4. Run the following three live scripts to reproduce all results reported in the paper (including figures, tables, and intermediate logs/process information):
-
+5. 
    * `cnet-tb-v1/Experiments/sim_mpQP/sim_mpqp.mlx`
    * `cnet-tb-v1/Experiments/sim_CA/sim_CA.mlx`
    * `cnet-tb-v1/Experiments/sim_ACC/sim_ACC.mlx`
-
+   * 
 ### Reproducing figures/reports from saved data (optional)
 
 If you only want to reproduce the reported figures/tables without rerunning the full simulations:
