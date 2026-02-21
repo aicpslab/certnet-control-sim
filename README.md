@@ -125,7 +125,8 @@ If you only want to reproduce the reported figures/tables without rerunning the 
 > * Exported paper-ready figures are saved to `Figures/`.
 
 **Environment (reproducibility).**  
-OS: Windows 11  
-CPU: 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz  
-MATLAB: R2025a (25.1.0.2943329)  
-Solvers/Libraries: MOSEK 11.0.27; YALMIP 20250626; MPT3 3.2.1
+- **OS:** Windows 11  
+- **CPU:** 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz  
+- **MATLAB:** R2025a (25.1.0.2943329)  
+- **Solvers/Libraries:** MOSEK 11.0.27; YALMIP 20250626; MPT3 3.2.1
+- MATLAB toolboxes: omitted for brevity (MATLAB will report any missing product dependencies at runtime).
