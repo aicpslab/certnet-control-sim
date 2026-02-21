@@ -5,6 +5,7 @@ This repository contains the MATLAB implementation of our certified executor / C
 
 The codebase includes:
 - a reusable toolbox for certified library construction and CertNet execution,
+- training and inference utilities,
 - and reproducible experiments for three case studies:
   - mpQP benchmark,
   - control allocation (CA),
@@ -18,7 +19,7 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 ## Repository contents
 ```text
 .
-├─ cnet-tb-v1/                         # Core toolbox for certified executor / CertNet
+├─ cnet-tb-v1/                              # Core toolbox for certified executor / CertNet
 │  ├─ cert/                                 # Certified feasible library construction and querying
 │  │  ├─ @Cert/
 │  │  │  ├─ Cert.m
@@ -45,7 +46,7 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 │  │  │  └─ set_certnet_cfg_default_.m
 │  │  ├─ InterFcn/                          # Interface/export helpers
 │  │  │  └─ export_phi_params_.m
-│  │  ├─ cvxOpt/                            # Convex / simplex / Carathéodory utilities
+│  │  ├─ cvxOpt/                            # Convex/simplex/Carathéodory utilities
 │  │  │  ├─ carath_reduce_.m
 │  │  │  ├─ convex_rep_ok_.m
 │  │  │  ├─ proj_simplex_.m
@@ -58,32 +59,32 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 │  │     ├─ softplus_.m
 │  │     └─ struct_merge_.m
 │  │
-│  └─ Experiments/                          # Reproducible experiment scripts and reports
+│  └─ Experiments/                          # Reproducible experiment scripts
 │     ├─ sim_ACC/                           # Adaptive Cruise Control (ACC) case study
-│     │  ├─ sim_ACC.mlx                     # Main ACC demo / experiment notebook
-│     │  ├─ acc_test_closedloop_.m          # Closed-loop evaluation
-│     │  ├─ acc_plot_.m                     # Plotting utilities
-│     │  ├─ acc_report_.m                   # Summary/report generation
-│     │  └─ Outputs/                        # ACC outputs (figures, logs, tables)
+│     │  ├─ core/                           # ACC experiment functions (test/plot/report)
+│     │  │  ├─ acc_plot_.m
+│     │  │  ├─ acc_report_.m
+│     │  │  └─ acc_test_closedloop_.m
+│     │  └─ sim_ACC.mlx                     # Main ACC experiment script
 │     │
 │     ├─ sim_CA/                            # Control Allocation (CA) case study
-│     │  ├─ sim_CA.mlx                      # Main CA demo / experiment notebook
-│     │  ├─ ca_test_sync_inject_.m          # Closed-loop / injection evaluation
-│     │  ├─ ca_plot_.m                      # Plotting utilities
-│     │  ├─ ca_report_.m                    # Summary/report generation
-│     │  └─ Outputs/                        # CA outputs (figures, logs, tables)
+│     │  ├─ core/                           # CA experiment functions (test/plot/report)
+│     │  │  ├─ ca_plot_.m
+│     │  │  ├─ ca_report_.m
+│     │  │  └─ ca_test_sync_inject_.m
+│     │  └─ sim_CA.mlx                      # Main CA experiment script
 │     │
 │     ├─ sim_mpQP/                          # mpQP benchmark experiments
-│     │  ├─ sim_mpqp.mlx                    # Main mpQP demo / experiment notebook
-│     │  ├─ mpqp_make_problem_.m            # Problem generation
-│     │  ├─ mpqp_build_baseline_.m          # Baseline construction (Opt / PWA / NN / NN+Proj)
-│     │  ├─ mpqp_gen_trainingData.m         # Training data generation
-│     │  ├─ mpqp_test_problem_.m            # Benchmark evaluation
-│     │  ├─ mpqp_plot_problem2_.m           # Plotting / summary figures
-│     │  ├─ mpqp_report_problem_.m          # Reporting utilities
-│     │  └─ outputs/                        # mpQP outputs (figures, logs, tables)
+│     │  ├─ core/                           # mpQP experiment functions (build/test/plot/report)
+│     │  │  ├─ mpqp_build_baseline_.m
+│     │  │  ├─ mpqp_gen_trainingData.m
+│     │  │  ├─ mpqp_make_problem_.m
+│     │  │  ├─ mpqp_plot_problem2_.m
+│     │  │  ├─ mpqp_report_problem_.m
+│     │  │  └─ mpqp_test_problem_.m
+│     │  └─ sim_mpqp.mlx                    # Main mpQP experiment script
 │     │
-│     └─ tmpFcns/                           # Temporary / helper functions for experiments
+│     └─ tmpFcns/                           # Shared temporary/helper functions for experiments
 │        ├─ build_pureNN_.m
 │        ├─ net_to_alg_.m
 │        └─ pure_nn_forward_alg_.m
