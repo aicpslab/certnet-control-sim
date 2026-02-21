@@ -4,7 +4,7 @@
 
 This repository provides the MATLAB implementation of our **certified executor / CertNet** framework for hard-constrained control with **deployable, predictable-latency execution**.
 
-In hard-constrained control deployment, the key advantage of our framework is that it **decouples hard-feasibility guarantees from performance learning**. Hard constraint satisfaction is enforced **structurally** by the certified executor at deployment time (rather than by online optimization or post-hoc repair), while learning is used only to select and mix actions **within a certified feasible family** to recover reference-policy performance. As a result, the method provides **(i) feasibility by construction**, **(ii) a non-iterative fixed-graph execution path with budgetable and predictable evaluation cost (and low latency in practice)**, and **(iii) strong deployability** even when explicit solutions are unavailable or too expensive to compile offline.
+In hard-constrained control deployment, the key advantage of our framework is that it **decouples hard-feasibility guarantees from performance learning**. The certified executor enforces hard constraint satisfaction **structurally** at deployment time, while learning is used only to recover reference-policy performance **within a certified feasible family**. This yields **(i) feasibility by construction (R1)**, **(ii) competitive performance recovery (R2)**, and **(iii) a non-iterative fixed-graph execution path with predictable, budgetable evaluation cost (R3)**.
 
 The repository includes:
 - a reusable toolbox **`cnet-tb-v1`** for certified library construction and CertNet execution,
