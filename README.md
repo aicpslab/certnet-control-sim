@@ -127,7 +127,3 @@ If you only want to reproduce the reported figures/tables without rerunning the 
 > * This repository includes saved simulation data used in the paper, containing the required parameters and baseline outputs for reproduction.
 > * Full simulation runs automatically save data with timestamped filenames, so the saved data used in the paper are not overwritten.
 > * Exported paper-ready figures are saved to `Figures/`.
-
-```
-```
-
