@@ -1,0 +1,106 @@
+function api_build_(self,G,h,S,cfg)
+% 1) Default configurations
+    cfg0 = set_cert_default_cfg_();   % single source of truth
+        
+    if nargin < 5 || isempty(cfg)
+        cfg = cfg0;
+    else
+        if ~isstruct(cfg), error('cfg must be a struct.'); end
+        % merge: user overrides defaults (recursive)
+        cfg = struct_merge_(cfg0, cfg);
+
+        % consistency: update => use
+        if isfield(cfg,'opt') && isstruct(cfg.opt) && isfield(cfg.opt,'update_cacheAct') ...
+                && cfg.opt.update_cacheAct
+            cfg.opt.use_cacheAct = true;
+        end
+    end
+
+    [cfg, nx, nu] = deal(cfg, size(S,2), size(G,2));
+    [self.cfg, self.nx, self.nu] = deal(cfg, nx, nu);
+
+ % 2) Boundedness check
+    P = Polyhedron([S,G],h).normalize.minHRep(); self.P = P;
+    if ~self.P.isBounded
+        fprintf(2, "[Cert] Polyhedron is UNBOUNDED after normalize+minHRep.\n");
+        return;
+    end
+    self.P.computeVRep;
+ 
+ % 3) Normalization
+    ymin = min(self.P.V,[],1).'; ymax = max(self.P.V,[],1).';
+    c    = 0.5*(ymax + ymin);
+    d    = 0.5*(ymax - ymin); d(abs(d) < 1e-9) = 1.0;
+
+    [sc.c_th, sc.d_th] = deal(c(1:nx), d(1:nx));
+    [sc.c_u,  sc.d_u ] = deal(c(nx+1:nx+nu), d(nx+1:nx+nu));
+
+    self.sc            = sc;
+
+    [G2, h2, S2] = deal(P.A(:,nx+1:end), P.b, P.A(:,1:nx));
+
+    [G2s, h2s, S2s] = deal(G2*diag(sc.d_u), h2 - S2*sc.c_th - G2*sc.c_u, S2*diag(sc.d_th));
+    Vs   = bsxfun(@rdivide, bsxfun(@minus, P.V, c.'), d.');
+
+% 4) Construct certifier    
+    self.law = comp_compile_lib_(G2s, h2s, S2s, Vs, sc, self.cfg.opt);
+
+% 5) Online configurations    
+    o = cfg.opt;
+    self.opt_hot = struct( ...
+        'tol_query',       o.tol_query, ...
+        'use_cacheAct',    logical(o.use_cacheAct), ...
+        'update_cacheAct', logical(o.update_cacheAct), ...
+        'act_resThr',      o.act_resThr, ...
+        'act_epsw',        o.act_epsw, ...
+        'act_maxCand',     o.act_maxCand );
+    if o.update_cacheAct, o.use_cacheAct = true; end
+
+    [self.cache, self.cacheAct] = deal([],[]);
+
+    [self.xbuf, self.xbar] = deal([],[]);
+end
+
+%% Laws Compilation
+
+function laws = comp_compile_lib_(G2s, bs, S2s, Vb, sc,opt)
+
+    [tol, rcond_thr] = deal(opt.tol_build, opt.rcond_thr);
+
+    nu = size(G2s,2);
+
+    I_map = containers.Map('KeyType','char','ValueType','logical');
+    for i = 1:size(Vb,1)
+        tight = find(abs([S2s,G2s]*Vb(i,:).' - bs) <= tol);
+        if numel(tight) < nu, continue; end
+        C = nchoosek(tight(:).', nu);
+        for k = 1:size(C,1)
+            I = C(k,:);
+            if rcond(G2s(I,:)) < rcond_thr, continue; end
+            I_map(sprintf('%d,', I)) = true;
+        end
+    end
+    keysI = I_map.keys;
+    merged = containers.Map('KeyType','char','ValueType','logical');
+
+    laws   = {};
+    for kk = 1:numel(keysI)
+        I  = sscanf(keysI{kk}, '%d,').';
+        [GI,SI,hI] = deal(G2s(I,:), S2s(I,:), bs(I));
+
+        Mr = GI\(-SI);
+        ur = GI\(hI);
+
+        key = [mat2str(Mr) '|' mat2str(ur.')];
+        if isKey(merged,key), continue; end
+
+        Px = Polyhedron('A', G2s*Mr + S2s, 'b', bs - G2s*ur).normalize.minHRep();
+        if Px.isEmptySet||~Px.isFullDim, continue; end
+
+        merged(key) = true;
+
+        Du = diag(sc.d_u);
+        laws{end+1} = struct('M', Du*Mr, 'b', sc.c_u + Du*ur, 'Ax', Px.A, 'bx', Px.b, 'GI_inv', GI \ eye(size(GI,1))); %#ok<AGROW>
+    end
+    fprintf('nLaws=%d\n', numel(laws));
+end

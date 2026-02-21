@@ -1,0 +1,173 @@
+% ========================================================================
+% @CertNet/api_train_.m  (TRAIN: fixed lr; NO tau; TRUE BATCH) 
+% ========================================================================
+function hist = api_train_(self, X, Y, cfg)
+
+    if nargin < 4 || isempty(cfg), cfg = struct(); end
+
+    [epochs, batchsz, verbose, beta, gamma, ent_eps] = getfield_def_(...
+        cfg, 'epochs',30, 'batch',256, 'verbose',1, 'beta',0, 'gamma',0, 'ent_eps',1e-12 );
+
+    lr_w = getfield_def_(cfg, 'lr', 1e-3);                 % fixed scalar
+    N    = size(X,1);
+
+    % (speed) prefer single 
+    if ~isa(X,'single'), X = single(X); end
+    if ~isa(Y,'single'), Y = single(Y); end
+
+    if self.use_norm, [self.x_mu, self.x_sig] = deal(mean(X,1), std(X,0,1) + 1e-6);
+    else,             [self.x_mu, self.x_sig] = deal(zeros(1,self.nx,'single'), ones(1,self.nx,'single'));
+    end
+
+    phiLocal = self.phi;
+    [avgW, avgW2, it] = deal([], [], 0);
+
+    [hist.loss, hist.lr] = deal(zeros(epochs,1), zeros(epochs,1));
+
+    % ------------------------- cache vertices once -------------------------
+    Vx = cell(N,1);
+    for i = 1:N
+        Vx{i} = single(self.cert.vertices(X(i,1:self.cert.nx).'));       % K_i×nu
+    end
+
+    % -------------------------------- train --------------------------------
+    for j = 1:epochs
+        t_epoch = tic;
+
+        p = randperm(N);
+        [loss_sum, nb] = deal(0, 0);
+
+        for s0 = 1:batchsz:N
+            s1   = min(N, s0 + batchsz - 1);
+            idx  = p(s0:s1);
+            B    = numel(idx);
+
+            Xphys = X(idx,:).';                                          % nx×B
+            dlY   = dlarray(Y(idx,:).', 'CB');                           % nu×B
+
+            Vxs0  = Vx(idx);                                             % B×1 cell
+            [Vpad, M] = pack_Vpad_mask_(Vxs0, self.nu);                  % Kmax×nu×B, Kmax×1×B
+
+            it = it + 1;
+            [loss, gPhi] = dlfeval(@trn_loss_grads_, self, phiLocal, Xphys, dlY, Vpad, M);
+
+            [phiLocal, avgW, avgW2] = adamupdate(phiLocal, gPhi, avgW, avgW2, it, lr_w);
+
+            loss_sum = loss_sum + double(extractdata(loss));
+            nb       = nb + 1;
+        end
+
+        hist.loss(j) = loss_sum / max(nb,1);
+        hist.lr(j)   = lr_w;
+
+        if verbose
+            fprintf("[TRAIN] %3d/%3d | t=%.3g s | loss=%.3e | lr=%.3g\n", ...
+                j, epochs, toc(t_epoch), hist.loss(j), hist.lr(j));
+        end
+    end
+
+    self.phi = phiLocal;
+    [self.Ws, self.bs] = export_phi_params_(self.phi);
+end
+
+
+% ------------------------------------------------------------------------
+% pack variable-K vertices (cell) into fixed-Kmax tensor + mask 
+% ------------------------------------------------------------------------
+function [Vpad, M] = pack_Vpad_mask_(Vxs0, nu)
+
+    B    = numel(Vxs0);
+    Kb   = cellfun(@(V) size(V,1), Vxs0);
+    Kmax = max(Kb);
+
+    Vpad = zeros(Kmax, nu, B, 'single');
+    M    = false(Kmax, 1,  B);
+
+    for b = 1:B
+        k = Kb(b);
+        Vpad(1:k,:,b) = Vxs0{b};
+        M(1:k,1,b)    = true;
+    end
+end
+
+
+% ========================================================================
+% @CertNet/trn_loss_grads_.m  (TRAIN: fixed lr; NO tau; TRUE BATCH) 
+% Inputs:
+%   Vpad_ : Kmax×nu×B (single)
+%   M_    : Kmax×1×B  (logical)   1=valid vertex, 0=padding
+% ========================================================================
+function [loss, gPhi] = trn_loss_grads_(self, phi_, Xphys_, dlY_, Vpad_, M_)
+
+    epsw = 1e-12;
+
+    % ---- PHI forward ----
+    outBatch = forward(phi_, dlarray(norm_x_(Xphys_,self.x_mu', self.x_sig'), 'CB'));  % (nu+1)×B
+    B        = size(outBatch,2);
+
+    % ---- split t_dir, g (BATCH) ----
+    [t_dir_B, g_B] = trn_split_tg_batch_(self, outBatch);   % t_dir_B: nu×B, g_B: 1×B
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    epsn = 1e-12;
+    den  = max(sqrt(sum(t_dir_B.^2,1)), epsn);      % 1×B
+    t_dir_B = t_dir_B ./ den;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+    % ---- vertices tensor ----
+    Vpad = dlarray(Vpad_);                                  % Kmax×nu×B
+    Mdl  = dlarray(single(M_));                             % Kmax×1×B   (1=valid, 0=pad)
+    
+    % ------------------------------ POST (match inference) ------------------------------
+    % inference: t = g * t_dir
+    % batch:     t_B = t_dir_B .* g_B   (broadcast over nu)
+    
+    t_B = t_dir_B .* reshape(g_B, [1 B]);                   % nu×B
+    
+    % inference: s = V * t
+    t3 = reshape(t_B, [self.nu 1 B]);                       % nu×1×B
+    s  = pagemtimes(Vpad, t3);                              % Kmax×1×B
+
+    s = s + (1 - Mdl) * (-1e9);
+    % stable softmax over K (dim=1)
+    s = s - max(s, [], 1);          % 1×1×B broadcast
+    
+    w = exp(s);
+    w = w ./ (sum(w, 1) + epsw);                            % Kmax×1×B
+
+    % ---- uHat = V^T * w (batch) ----
+    Vt   = permute(Vpad, [2 1 3]);                                        % nu×K×B
+    u3   = pagemtimes(Vt, w);                                             % nu×1×B
+    uHat = reshape(u3, [self.nu B]);                                      % nu×B
+
+    y = stripdims(dlY_);                                                  % nu×B
+    e = uHat - y;
+
+    loss_mse = mean(mean(e.^2, 1), 2);                                    % scalar
+   
+    loss = loss_mse;
+    gPhi = dlgradient(loss, phi_.Learnables);
+end
+
+
+% ------------------------------------------------------------------------
+% batch version of util_split_tg_ 
+% ------------------------------------------------------------------------
+function [t_dir_B, g_B] = trn_split_tg_batch_(self, outBatch)
+
+    nu    = self.nu;
+    t_raw = stripdims(outBatch(1:nu, :));
+    g_raw = stripdims(outBatch(nu+1, :));
+
+    t_dir_B = t_raw;
+    if self.use_t_norm && self.nu > 1
+        nrm     = sqrt(sum(t_dir_B.^2, 1));
+        t_dir_B = t_dir_B ./ (nrm + self.t_norm_eps);
+    end
+
+    g_B = softplus_(g_raw) + self.g_floor;
+    if ~isempty(self.g_max) && self.g_max > 0
+        g_B = g_B - max(g_B - self.g_max, 0);
+    end
+end
