@@ -1,4 +1,3 @@
-````markdown
 # certnet-control-sim
 
 ## Overview
