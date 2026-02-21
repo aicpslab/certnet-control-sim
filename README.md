@@ -11,7 +11,7 @@ The repository includes:
   - **control allocation (CA)**,
   - **adaptive cruise control (ACC)**.
 
-The framework is designed to **decouple hard-constraint feasibility from performance learning**: offline, we compile and synthesize certified feasible candidate libraries; online, we execute a fixed-structure algebraic pipeline without iterative optimization.
+The framework is designed to **decouple hard-constraint feasibility from performance learning**: offline, we synthesize certified feasible candidate libraries and train the learning component; online, we execute a fixed-structure algebraic pipeline without iterative optimization.
 
 ---
 
