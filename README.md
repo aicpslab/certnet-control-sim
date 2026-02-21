@@ -98,6 +98,7 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 ├─ CA_vars_2026-02-20_104948.mat            # Saved CA experiment variables/results
 ├─ MPQP_vars_2026-02-20_160236.mat          # Saved mpQP experiment variables/results
 └─ README.md
+```
 
 > **Notes**
 > - We provide the saved simulation data used in the paper, including the necessary parameters and baseline results for reproducing the reported experimental results.
