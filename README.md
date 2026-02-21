@@ -75,7 +75,7 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 │     │  │  ├─ mpqp_build_baseline_.m
 │     │  │  ├─ mpqp_gen_trainingData.m
 │     │  │  ├─ mpqp_make_problem_.m
-│     │  │  ├─ mpqp_plot_problem2_.m
+│     │  │  ├─ mpqp_plot_.m
 │     │  │  ├─ mpqp_report_problem_.m
 │     │  │  └─ mpqp_test_problem_.m
 │     │  └─ sim_mpqp.mlx                    # Main mpQP experiment script
