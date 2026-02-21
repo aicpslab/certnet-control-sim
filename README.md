@@ -18,9 +18,6 @@ The framework is designed to **decouple hard-constraint feasibility from perform
 ## Repository Structure
 
 ```text
-## Repository Structure
-
-```text
 .
 ├─ cnet-tb-v1/                              # Core toolbox for certified executor / CertNet
 │  ├─ cert/                                 # Certified feasible library construction and querying
@@ -151,7 +148,7 @@ The code has been tested with the following environment:
 * **CPU:** 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz
 * **MATLAB:** R2025a (25.1.0.2943329)
 * **Solvers/Libraries:** MOSEK 11.0.27; YALMIP 20250626; MPT3 3.2.1
-* **MATLAB toolboxes:** omitted for brevity (MATLAB will report missing product dependencies at runtime)
+* MATLAB product dependencies are not enumerated here for brevity; missing products will be reported at runtime when executing the provided live scripts/models.
 
 > **Note**
 >
@@ -329,4 +326,3 @@ For questions or issues, please open a GitHub issue or contact the authors.
 ```
 
 If you want, I can also give you a **compact GitHub version** (shorter README) and a **paper-supplement version** (longer, with more experimental details).
-```
