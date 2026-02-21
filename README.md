@@ -4,8 +4,7 @@
 This repository contains the MATLAB implementation of our certified executor / CertNet framework for hard-constrained control with deployable, predictable-latency execution.
 
 The codebase includes:
-- a reusable toolbox for certified library construction and CertNet execution,
-- training and inference utilities,
+- a reusable toolbox **`cnet-tb-v1`** for certified library construction and CertNet execution,
 - and reproducible experiments for three case studies:
   - mpQP benchmark,
   - control allocation (CA),
