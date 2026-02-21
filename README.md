@@ -19,7 +19,7 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 ## Repository contents
 ```text
 .
-├─ CertNet Toolbox/                         # Core toolbox for certified executor / CertNet
+├─ cnet-tb-v1/                         # Core toolbox for certified executor / CertNet
 │  ├─ cert/                                 # Certified feasible library construction and querying
 │  │  ├─ @Cert/
 │  │  │  ├─ Cert.m
@@ -97,5 +97,4 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 ├─ ACC_vars_2026-02-20_101044.mat           # Saved ACC experiment variables/results
 ├─ CA_vars_2026-02-20_104948.mat            # Saved CA experiment variables/results
 ├─ MPQP_vars_2026-02-20_160236.mat          # Saved mpQP experiment variables/results
-├─ untitled.mlx                             # Scratch notebook (optional; can be removed)
 └─ README.md
