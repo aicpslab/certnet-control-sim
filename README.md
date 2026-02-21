@@ -104,7 +104,7 @@ offline, we compile and synthesize certified feasible candidate libraries; onlin
 > - We provide the saved simulation data used in the paper, including the necessary parameters and baseline results for reproducing the reported experimental results.
 > - If you only want to reproduce the reported figures/tables (without rerunning the full simulations), load the corresponding `.mat` data file in MATLAB first, and then run the associated `report` and `plot` functions directly.
 
-
+---
 ## Quick start
 
 1. Download or clone this repository, and keep the folder structure unchanged.
