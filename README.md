@@ -1,5 +1,23 @@
 # certnet-control-sim
 
+## Overview
+This repository contains the MATLAB implementation of our certified executor / CertNet framework for hard-constrained control with deployable, predictable-latency execution.
+
+The codebase includes:
+- a reusable toolbox for certified library construction and CertNet execution,
+- training and inference utilities,
+- and reproducible experiments for three case studies:
+  - mpQP benchmark,
+  - control allocation (CA),
+  - adaptive cruise control (ACC).
+
+The framework is designed to decouple hard-constraint feasibility from performance learning:
+offline, we compile and synthesize certified feasible candidate libraries; online, we execute a fixed-structure algebraic pipeline without iterative optimization.
+
+---
+
+## Repository contents
+```text
 .
 ├─ CertNet Toolbox/                         # Core toolbox for certified executor / CertNet
 │  ├─ cert/                                 # Certified feasible library construction and querying
