@@ -123,3 +123,9 @@ If you only want to reproduce the reported figures/tables without rerunning the 
 > * This repository includes saved simulation data used in the paper, containing the required parameters and baseline outputs for reproduction.
 > * Full simulation runs automatically save data with timestamped filenames, so the saved data used in the paper are not overwritten.
 > * Exported paper-ready figures are saved to `Figures/`.
+
+**Environment (reproducibility).**  
+OS: Windows 11  
+CPU: 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz  
+MATLAB: R2025a (25.1.0.2943329)  
+Solvers/Libraries: MOSEK 11.0.27; YALMIP 20250626; MPT3 3.2.1
