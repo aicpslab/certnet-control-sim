@@ -291,7 +291,7 @@ Runtime is measured on representative deploy-time inputs but **not injected into
 | ACC | NN+Proj | 800.6 / 1449.4 | 0.00% violation | timing-only evaluation |
 |  | **CertNet** | **81.2 / 168.2** | **0.00% violation** | timing-only evaluation |
 
-> **Takeaway:** Across both closed-loop benchmarks, **CertNet** provides the strongest overall deployment profile: **feasibility by construction + competitive control performance + much lower runtime (especially tail latency)**.
+> **Takeaway:** Across both closed-loop benchmarks, **CertNet** provides the strongest overall deployment profile: **feasibility by construction + competitive control performance + much lower runtime (including tail latency)**.
 > 
 ---
 
