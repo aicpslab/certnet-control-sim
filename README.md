@@ -104,7 +104,7 @@ Offline, the framework synthesizes certified feasible candidate libraries and tr
 ```
 
 > **Notes**
-> - This repository provides the toolbox implementation **`cnet-tb-v1`**, which realizes the framework and experiment pipeline used in the paper.
+> - This repository provides the simple toolbox implementation **`cnet-tb-v1`**, which realizes the framework and experiment pipeline used in the paper.
 > - The folders `cvxOpt/` and `utilFcn/` contain supporting convex-geometry and general mathematical utilities used by the implementation. These are foundational building blocks and can be replaced by alternative implementations.
 
 ---
