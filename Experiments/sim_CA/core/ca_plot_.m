@@ -138,7 +138,7 @@ for ic = 1:3
 
     if ic == 1
         hLeg(end+1,1) = ht; %#ok<AGROW>
-        labLeg{end+1,1} = 'tgt'; %#ok<AGROW>
+        labLeg{end+1,1} = 'Target'; %#ok<AGROW>
     else
         set(ht,'HandleVisibility','off');
     end
