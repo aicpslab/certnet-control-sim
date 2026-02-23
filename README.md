@@ -109,7 +109,7 @@ Offline, the framework synthesizes certified feasible candidate libraries and tr
 
 ---
 
-## Quick Start
+## Quick Start for Reproducibility
 
 1. Clone or download this repository and keep the folder structure unchanged.
 2. Open MATLAB and set the current folder to the repository root.
@@ -160,13 +160,13 @@ Across all cases, the same deployment principle is tested: **feasibility is enfo
 
 ---
 
-## 1) mpQP Benchmark (Controlled Scaling; PWA Included When Available)
+## 1) mpQP Benchmark (Controlled Scaling; PWA Included if Available)
 
 ### What this benchmark shows
 
 The mpQP suite provides a controlled comparison among:
 - **QP (online solver)**
-- **PWA (explicit solution, when offline compilation succeeds)**
+- **PWA (explicit solution, if available)**
 - **PureNN**
 - **NN+Proj**
 - **CertNet (ours)**
@@ -292,32 +292,7 @@ Runtime is measured on representative deploy-time inputs but **not injected into
 | ACC | **CertNet** | **81.2 / 168.2** | **0.00% violation** | timing-only evaluation |
 
 > **Takeaway:** Across both closed-loop benchmarks, **CertNet** provides the strongest overall deployment profile: **feasibility by construction + competitive control performance + much lower runtime (especially tail latency)**.
-
----
-
-## 5) Reproducibility Assets Included
-
-This repo includes both the **core method implementation** and the **paper reproducibility artifacts**.
-
-### Toolbox
-- `cnet-tb-v1/cert/` - certified feasible library construction and query
-- `cnet-tb-v1/cert-net/` - CertNet executor, training, and inference APIs
-
-### Experiment scripts
-- `Experiments/sim_mpQP/sim_mpqp.mlx`
-- `Experiments/sim_CA/sim_CA.mlx`
-- `Experiments/sim_ACC/sim_ACC.mlx`
-
-### Saved experiment data (`*.mat`)
-- Contains the main outputs needed to regenerate reported figures/tables
-- Timestamped saving is used to avoid overwriting paper-result snapshots
-
-### Figure exports
-- **PDF / EPS** - paper-ready vector outputs
-- **PNG** - README/GitHub preview images
-
-> To regenerate figures/tables **without rerunning full simulations**, load the corresponding saved `.mat` file and run the associated `report` / `plot` functions in each experiment `core/` folder.
-
+> 
 ---
 
 ## Notes on Reported Timing Metrics
