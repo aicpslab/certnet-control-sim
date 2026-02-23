@@ -156,7 +156,7 @@ The experiments evaluate CertNet across three representative settings:
 - **Control Allocation (CA)** (deadline-aware closed-loop deployment)
 - **Adaptive Cruise Control (ACC)** (CLF/CBF-style safety filtering)
 
-Across all cases, the same deployment principle is tested: **feasibility is enforced structurally**, **learning recovers performance**, and the deployed executor runs through a **non-iterative fixed graph** with low and predictable runtime.
+Across all cases, the same deployment principle is tested: **feasibility is enforced structurally**, **learning recovers performance**, and the deployed executor runs through a **non-iterative fixed graph** with low latency.
 
 ---
 
