@@ -159,8 +159,7 @@ The code has been tested with the following environment:
 ---
 ## Features and Experimental Highlights
 
-> **GitHub preview note:** GitHub does not render PDF/EPS figures inline in README.  
-> This repo includes **PNG preview images** in `Figures/` for quick viewing, while **PDF/EPS** versions are kept as paper-ready exports.
+> **GitHub preview note:** Figures are previewed as PNG in this README for GitHub compatibility, while **PDF** versions are kept as paper-ready exports.
 
 This repository provides a **deployment-oriented certified executor (CertNet)** for hard-constrained control and decision problems.  
 The key idea is to **decouple hard-feasibility from performance learning**:
