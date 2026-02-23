@@ -175,11 +175,11 @@ Across both settings, **CertNet preserves hard feasibility (up to numerical tole
 
 ### Headline results
 
-- **S1**
+- **Setting 1 (S1)**
   - **CertNet:** **125.6 / 114.1 / 333.5 μs** (mean / p50 / p99)
   - **Hard-feasibility violation rate:** **0.00%**
   - **Mean speedup vs QP:** **13.43×**
-- **S2**
+- **Setting 2 (S2)**
   - **CertNet:** **196.4 / 178.3 / 465.8 μs** (mean / p50 / p99)
   - **Hard-feasibility violation rate:** **0.00%**
   - **Mean speedup vs QP:** **8.76×**
@@ -196,7 +196,7 @@ Across both settings, **CertNet preserves hard feasibility (up to numerical tole
 ### Included artifacts
 
 - Runtime CDF / violation CDF / timing summary / runtime-error trade-off figure
-- Aggregate performance table (timing / feasibility / fidelity)
+- Reported paper metrics (timing / feasibility / fidelity; see paper for full table)
 - Offline deployability scale summary (PWA availability + library sizes)
 
 <p align="center">
@@ -236,7 +236,7 @@ This makes runtime tails directly affect closed-loop behavior.
 ### Included artifacts
 
 - Closed-loop trajectory figure under hold-on-timeout execution
-- Aggregate table (timing / timeout / feasibility / tracking metric)
+- Reported paper metrics (timing / timeout / feasibility / tracking metric; see paper for full table)
 - Optional "ideal Opt" (timing-ignored oracle) reference trajectory
 
 <p align="center">
@@ -270,7 +270,7 @@ Runtime is measured on representative deploy-time inputs but **not injected into
 ### Included artifacts
 
 - Closed-loop trajectory figure (speed / acceleration / safety margin)
-- Aggregate table (timing / feasibility / performance)
+- Reported paper metrics (timing / feasibility / performance; see paper for full table)
 - Timing statistics on representative closed-loop inputs
 
 <p align="center">
