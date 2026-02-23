@@ -284,12 +284,12 @@ Runtime is measured on representative deploy-time inputs but **not injected into
 
 | Benchmark | Method | mean / p99 runtime (μs) | Feasibility | Deploy-time note |
 |---|---|---:|---|---|
-| CA | Opt | 1521.9 / 4142.6 | 0.00% violation | 100.00% timeout (deadline semantics) |
+|  | Opt | 1521.9 / 4142.6 | 0.00% violation | 100.00% timeout (deadline semantics) |
 | CA | NN+Proj | 1271.2 / 3590.1 | 0.00% violation | 56.60% timeout |
-| CA | **CertNet** | **217.2 / 680.8** | **0.00% violation** | **0.00% timeout** |
-| ACC | Opt | 897.3 / 1425.4 | 0.00% violation | timing-only evaluation |
+|  | **CertNet** | **217.2 / 680.8** | **0.00% violation** | **0.00% timeout** |
+|  | Opt | 897.3 / 1425.4 | 0.00% violation | timing-only evaluation |
 | ACC | NN+Proj | 800.6 / 1449.4 | 0.00% violation | timing-only evaluation |
-| ACC | **CertNet** | **81.2 / 168.2** | **0.00% violation** | timing-only evaluation |
+|  | **CertNet** | **81.2 / 168.2** | **0.00% violation** | timing-only evaluation |
 
 > **Takeaway:** Across both closed-loop benchmarks, **CertNet** provides the strongest overall deployment profile: **feasibility by construction + competitive control performance + much lower runtime (especially tail latency)**.
 > 
