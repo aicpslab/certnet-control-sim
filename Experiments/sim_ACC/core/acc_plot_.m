@@ -121,7 +121,8 @@ function acc_plot_(out, pack)
     title(axH,'$h_k=D_k- \tau v_k$','Interpreter','latex');
     xlim(axH,[t_step(1), t_step(end)]); ylim(axH,hk_ylim);
 
-    lgd = legend(axH, hLeg, names, 'Interpreter','latex','Location','northeast','Box','on');
+    names_new=names;names_new{1}='ACC-Opt';
+    lgd = legend(axH, hLeg, names_new, 'Interpreter','latex','Location','northeast','Box','on');
     set(lgd,'FontSize',fs,'LineWidth',0.6,'Color','white');
     try, lgd.ItemTokenSize = [12 8]; catch, end
 
@@ -129,8 +130,8 @@ function acc_plot_(out, pack)
     tighten_axes_(axV); tighten_axes_(axU); tighten_axes_(axH);
 
     print(fig, fullfile(outdir,[base '.pdf']), '-dpdf', '-painters');
-print(fig, fullfile(outdir,[base '.eps']), '-depsc', '-painters');
-print(fig, fullfile(outdir,[base '.png']), '-dpng', '-r300');
+    print(fig, fullfile(outdir,[base '.eps']), '-depsc', '-painters');
+    print(fig, fullfile(outdir,[base '.png']), '-dpng', '-r300');
 
     % -------------------- local helpers --------------------
     function y = pick_ylim_pack_(pack, loKey, hiKey, fallback)

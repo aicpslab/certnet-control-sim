@@ -63,7 +63,7 @@ end
 
 % ---------------- methods (fixed order) ----------------
 keys  = {'Opt','NN','NNp','CN'};
-names = {'Opt','NN','NN+Proj','CN'};   % shortened
+names = {'CA-Opt','NN','NN+Proj','CN'};   % shortened
 
 % oracle availability
 haveOracle = false(size(keys));
